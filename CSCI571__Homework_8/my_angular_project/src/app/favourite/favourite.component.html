@@ -1,0 +1,89 @@
+
+<div>
+    <div *ngIf="displayfav" class="mt-4 " style="text-align: center">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-9 w-5  mx-auto">
+            <p class="headerValue">
+                List of your favorite events
+            </p>
+        </div>
+            </div>
+                </div>
+        
+        <div class="container-x table-responsive mt-3">
+            <div class="row">
+              <div class="col-md-8 mx-auto">
+                <table class="table rounded  table-hover" style="background-color: white;">
+                    <thead>
+                      <tr>
+                        <th style="text-align: center" scope="col">#</th>
+                        <th style="text-align: center"scope="col">Date</th>
+                        <th style="text-align: center" scope="col">Event</th>
+                        <th style="text-align: center" scope="col">Category</th>
+                        <th style="text-align: center" scope="col">Venue</th>
+                        <th style="text-align: center" scope="col">Favorite</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of favorites;let i = index">
+                        <th style="text-align: center" scope="row">{{i+1}}</th>
+                        <td style="text-align: center">{{row.Date}}</td>
+                        <td style="text-align: center">{{row.event}}</td>
+                        <td style="text-align: center"> {{row.Category}}</td>
+                        <td style="text-align: center">{{row.Venue}}</td>
+                        <td style="text-align: center">
+                            <i class="fa fa-trash" aria-hidden="true" (click)="removefavoritedata(row.id)"></i>
+        
+                            </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+    </div>
+    
+    <div *ngIf="displayerr" style="background-color:white;margin-top:40px" class="col-sm-6 text-center mx-auto rounded text-danger fw-bold">
+      No Favorite events to show
+    </div>
+    
+    
+</div>
+<!-- <div class="container-x table-responsive mt-3">
+    <div class="row p-2">
+      <div *ngIf="displayfav" class="col-md-10 mt-4" style="text-align: center">
+        <h4 class="headerValue" style="margin-bottom: 20px;">List of your favorite events</h4>
+          <table class="table rounded table-hover " style="background-color: white;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Event</th>
+                <th scope="col">Category</th>
+                <th scope="col">Venue</th>
+                <th scope="col">Favorite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of favorites;let i = index">
+                <td scope="row">{{i+1}}</td>
+                <td>{{row.Date}}</td>
+                <td>{{row.event}}</td>
+                <td>{{row.Category}}</td>
+                <td>{{row.Venue}}</td>
+                <td>
+                  <i class="fa fa-trash" aria-hidden="true" (click)="removefavoritedata(row.id)" style="cursor:pointer"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      
+      <div *ngIf="displayerr" style="background-color:white;margin-top:40px" class="col-sm-6 text-center mx-auto rounded text-danger fw-bold">
+        No Favorite events to show
+      </div>
+    </div>
+  </div> -->
+  

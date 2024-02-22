@@ -1,0 +1,650 @@
+<!-- <html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title style="color:white">Events Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            background-color: transparent;
+
+        }
+    </style>
+
+</head>
+
+<body> -->
+<div class="container">
+    <div class="row p-2">
+        <div class="col-md-6 offset-md-3 card_color">
+            <p class="text-center mt-5" style="color:white;font-family: 'Times New Roman', Times, serif;font-size: 40px;
+            margin-bottom: 40px">Events Search</p>
+            <hr>
+            <form id="event_form" class="mt-4">
+                <div>
+                    <label for="keyword" class="headerValue1">Keyword<span class="text-danger">*</span></label>
+                    <!-- <input type="text" class="form-control" required id="keyword" name="keyword" > -->
+                    <br>
+                    <!-- <mat-form-field class="example-full-width"> -->
+                    <input matInput [(ngModel)]="selectedKeyword" [matAutocomplete]="auto"
+                        [formControl]="searchkeywordctrl" id="keyword" class="form-control" required>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected()"
+                        [displayWith]="displayWith">
+                        <!-- <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option> -->
+                        <!-- <ng-container *ngIf="isLoading">
+                                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+                              </ng-container> -->
+                        <mat-option *ngIf="isLoading">
+                            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                        </mat-option>
+                        <ng-container *ngIf="!isLoading">
+                            <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+
+
+                            <mat-option *ngFor="let event of filteredkeyword" [value]="event">
+                                <span>{{event.name}}</span>
+                            </mat-option>
+                        </ng-container>
+                    </mat-autocomplete>
+                    <!-- </mat-form-field> -->
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-sm-6">
+                        <label for="distance" class="headerValue1">Distance (miles)</label>
+                        <input type="number" class="form-control" placeholder="10" id="distance" name="distance"
+                            ng-model="distance">
+                    </div>
+                    <div class="form-group col-sm-6 ">
+                        <label for="category" class="headerValue1">Category<span class="text-danger">*</span></label>
+                        <select class="form-select w-75" id="category" name="Category">
+                            <option value="">Default</option>
+                            <option value="Music">Music</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Arts & Theatre">Arts & Theatre</option>
+                            <option value="Film">Film</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group  mt-2">
+                    <label for="Location" class="headerValue1">Location<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control mb-2" id="location" name="location" [(ngModel)]="location"
+                        [disabled]="auto_location" required>
+                    <input type="checkbox" id="auto_location" [(ngModel)]="auto_location" (change)="toggleLocation()"
+                        [ngModelOptions]="{ standalone: true }">
+                    <label style="font-weight: 100;" for="auto_location" class="headerValue1"> Auto-Detect
+                        Location</label><br>
+                </div>
+                <div class="container mt-2 mb-4 ml-auto mr-auto">
+                    <div class="row justify-content-center" style="text-align:center ;">
+                        <div class="col-md-6">
+                            <div class=" mx-auto">
+                                <button class="btn btn-danger mt-2 " type="submit"
+                                    (click)="getFormData($event)">SEARCH</button>
+                                <button class="btn btn-primary mt-2" type="button"
+                                    style="margin-left:10% ;margin-right:10%" (click)="clearData()">CLEAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <div class="container-x table-responsive mt-3 tb_round">
+        <div class="row p-2">
+            <div id="table-container" *ngIf="tabledisplay" class="col-9 w-6 mx-auto" style="margin-left: 0px;margin-right:0px">
+                <table class="table rounded rounded-3 overflow-hidden table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center" scope="col">Date</th>
+                            <th style="text-align: center" scope="col">Icon</th>
+                            <th style="text-align: center" scope="col">Event</th>
+                            <th style="text-align: center" scope="col">Genre</th>
+                            <th style="text-align: center" scope="col">Venue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr scope="row" *ngFor="let row of tableData" (click)="getEventData(row[5])">
+                            <td style="text-align: center">{{row[0]}}</td>
+                            <td style="text-align: center"><img [src]="row[1]" style="width: 80px; height: 50px;"></td>
+                            <td style="text-align: center" class="hoverable">{{row[2]}}</td>
+                            <td style="text-align: center">{{row[3]}}</td>
+                            <td style="text-align: center">{{row[4]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> -->
+<div class="container-x table-responsive" *ngIf="tabledisplay">
+    <div class="row justify-content-center  p-2">
+        <div class="col-12 col-md-8">
+            <div class="rounded mt-3">
+                <table class="table rounded rounded-3 overflow-hidden table-striped  table-dark">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center" scope="col">Date</th>
+                            <th style="text-align: center" scope="col">Icon</th>
+                            <th style="text-align: center" scope="col">Event</th>
+                            <th style="text-align: center" scope="col">Genre</th>
+                            <th style="text-align: center" scope="col">Venue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr scope="row" *ngFor="let row of tableData" (click)="getEventData(row[5])"
+                            style="cursor:pointer">
+                            <td style="text-align: center">{{row[0]}}</td>
+                            <td style="text-align: center"><img [src]="row[1]" style="width: 80px; height: 50px;"></td>
+                            <td style="text-align: center" class="hoverable">{{row[2]}}</td>
+                            <td style="text-align: center">{{row[3]}}</td>
+                            <td style="text-align: center">{{row[4]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div id="table-container" *ngIf="tabledisplay" class="container cl-12 mt-4 tb_round">
+        
+    </div> -->
+<!-- <div *ngIf="displayNoRecord" class="container p-auto text-center mt-4 tb_round ">
+        <p class="error_msj">
+            No Record Found
+        </p>
+    </div> -->
+
+<div *ngIf="displayNoRecord" style="background-color:white;margin-top:50px"
+    class="col-sm-6 text-center mx-auto rounded text-danger ">
+    No results available
+</div>
+<div class="container pb-2">
+    <div id="event_list" class="event_box mb-4 col-sm-8" *ngIf="carddisplay">
+        <p class="text-white text-decoration-underline" (click)="displaytbback()" style="margin-left: 20px;cursor:pointer">
+            <i class="fa fa-angle-left"></i>
+            Back
+        </p>
+        <div id="head_container" class="textcolor">
+            <p class="text-center font-weight-bold text-white pb-4" style="font-size: 20px;">{{eventName}}
+                <mat-icon *ngIf="fav" aria-hidden="false" fontIcon="favorite_border" color="white" (click)="favo()"
+                    style="background-color:white;border:1px;border-radius: 50%;width:30px;height:30px;color:gray;vertical-align:middle;font-size: 20px;cursor:pointer;padding:5px">
+                </mat-icon>
+
+                <mat-icon *ngIf="fav1" aria-hidden="false" fontIcon="favorite" color="red"
+                    style="background-color:white ;color:red;border-radius: 50%;width:30px;height:30px;padding:5px;vertical-align:middle;font-size: 20px;cursor:pointer "
+                    (click)="removefavoritedata(id)"></mat-icon>
+                <!-- <i class="fa-duotone fa-circle-heart" style="--fa-primary-color: #ff0000; --fa-secondary-color: #ffffff;"></i> -->
+        </div>
+
+        <div>
+            <mat-tab-group mat-align-tabs="center" backgroundColor="primary" style="color:white !important"class="col-md-12"
+                mat-stretch-tabs="false">
+                <mat-tab label="Events">
+                    <div class="container mt-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <p class='headerValue'>Date </p><br>
+                                    <p class='dataValue'> {{datetime1}} </p>
+                                    <p *ngIf="Artistdisplay" class='headerValue'> Artist/Team </p><br>
+                                    <p class='dataValue'>{{artist}} </p>
+                                    <p class='headerValue'> Venue </p><br>
+                                    <p class='dataValue'>{{ venue }}</p>
+                                    <p *ngIf="Genredisplay" class='headerValue'> Genre </p><br>
+                                    <p class='dataValue'>{{genere_type}} </p>
+                                    <p *ngIf="Pricedisplay" class='headerValue'> Price Ranges </p><br>
+                                    <p class='dataValue'>{{price_range}}</p>
+                                    <p class='headerValue'> Ticket Status </p><br>
+                                    <!-- <p class='dataValue'>{{Ticket_status}} </p> -->
+                                    <div *ngIf="onsaledisplay" class="col-12 text-center">
+                                        <p class='btt1'> On Sale</p>
+                                    </div>
+                                    <div *ngIf="rescheduleddisplay" class="col-12 text-center">
+                                        <p class='btt2'> Rescheduled</p>
+                                    </div>
+                                    <div *ngIf="offsaledisplay" class="col-12 text-center">
+                                        <p class='btt3'> Off sale</p>
+                                    </div>
+                                    <div *ngIf="postponeddisplay" class="col-12 text-center">
+                                        <p class='btt4'> Postponed</p>
+                                    </div>
+                                    <div *ngIf="canceleddisplay" class="col-12 text-center">
+                                        <p class='btt5'> Cancelled</p>
+                                    </div>
+
+
+                                    <p class='headerValue mt-2' > Buy Ticket At:</p><br>
+                                    <p class='dataValue'><a class='dataValue' href='{{Ticket_URL}}' target='_blank'
+                                            style="color: blue;text-decoration: underline; ">Ticketmaster</a></p>
+
+                                    <!-- <div class="text-center">
+                                                <p class="text-white">Share on:
+                                                    <a href="https://twitter.com/intent/tweet?text=Check%20{{eventName}}%20on%20Ticketmaster&url={{Ticket_URL}}"
+                                                        target="_blank" class="fa fa-twitter mx-2"
+                                                        style="font-size:24px; color: aqua;">
+                                                    </a> &nbsp;
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{Ticket_URL}}"
+                                                        target="_blank" class="fa fa-facebook-official mx-2"
+                                                        style="font-size:24px; color:blue;">
+                                                    </a>
+                                                </p>
+                                            </div> -->
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 align-self-center">
+                                <div *ngIf="seat_map" class="text-center">
+                                    <img class='imagesetter img-fluid mx-auto d-block' src='{{seat_map}}'>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p class="text-white">Share on:
+                                    <a href="https://twitter.com/intent/tweet?text=Check%20{{eventName}}%20on%20Ticketmaster&url={{Ticket_URL}}"
+                                        target="_blank" class="fa fa-twitter mx-2"
+                                        style="font-size:24px; text-decoration:none; color: aqua;">
+                                    </a>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{Ticket_URL}}"
+                                        target="_blank" class="fa fa-facebook-official mx-2"
+                                        style="font-size:24px; color:blue;">
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </mat-tab>
+                <mat-tab label="Artist/Teams">
+                    <div *ngIf="displaySpoRecord" id="carouselExampleControls" class="carousel slide"
+                        data-ride="carousel" data-interval="false">
+                        <div class="carousel-inner" style="width: 80% !important; margin:auto !important">
+                            <div class="carousel-item" *ngFor="let item of spotifyData; let i = index;"
+                                [ngClass]="{'active' : i == 0}">
+                                <div class="row mt-3">
+                                    <div class="col-sm-3" style="text-align: center">
+                                        <img class='img1' src="{{item.image}}" alt="Avatar" style="width:120px">
+                                        <p class='headerValue mt-2'>{{item.name}}</p>
+                                    </div>
+                                    <div class="col-sm-3" style="margin-top: 10px;">
+                                        <p class="headerValue">Popularity</p>
+                                        <p style="text-align: center;margin-top: 20px; ">
+                                            <mat-progress-spinner color="warn" mode="determinate"
+                                                [value]="item.popularity" [diameter]="42"
+                                                style="margin-right:auto ; margin-left:auto">
+                                            </mat-progress-spinner>
+                                            <span style="position:relative; top: -33px;color:white">
+                                                {{item.popularity}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3" style="margin-top: 10px;">
+                                        <p class="headerValue" style="margin-bottom: 20px">Followers</p>
+                                        <p style="color: white;text-align:center;margin-bottom:40px">{{ item.followers |
+                                            number:'1.0-0' }}
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3" style="margin-top: 10px;text-align:center">
+                                        <p class="headerValue" style="margin-bottom: 20px">Spotify Link</p>
+                                        <p style="text-align: center" style="margin-bottom: 20px">
+                                            <a class="icon__spotify" href="{{item.spotify_link}}" target="_blank"
+                                                style="text-align:center">
+                                                <i class="fa fa-spotify" style="color: green;font-size:35px;"></i>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <p class="headerValue text-start mt-2" style="font-size:small;margin-bottom:20px">Albums featuring {{item.name}}</p>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row text-center justify-content-center">
+                                            <div class="col-8 p-4 col-md-4">
+                                                <img  [src]="item.albums[0]"  class="img-fluid">
+                                            </div>
+                                            <div class="col-8 p-4 col-md-4">
+                                                <img class="img-fluid"  [src]="item.albums[1]">
+                                            </div>
+                                            <div class="col-8 p-4 col-md-4">
+                                                <img class="img-fluid" [src]="item.albums[2]">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"
+                            *ngIf="spotifyData.length > 1" style="cursor:pointer ;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"
+                            *ngIf="spotifyData.length > 1" style="cursor:pointer ;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+
+                    <!-- <div *ngIf="displayNoSpoRecord" class="container p-auto text-center ">
+                            <p class="error_msj">
+                                No music related artist details to show 
+                            </p>
+                        </div> -->
+
+                    <div *ngIf="displayNoSpoRecord" style="background-color:white;margin-top: 70px;margin-bottom: 70px"
+                        class="col-sm-6 text-center mx-auto rounded text-danger">
+                        No music related artist details to show
+                    </div>
+
+
+                </mat-tab>
+                <!-- <mat-tab label="Artist/Teams">
+                        <div *ngIf="displaySpoRecord" class="carousel slide" data-ride="carousel" data-interval="false">
+                            <div class="carousel-inner">
+                                <div class="carousel-item" *ngFor="let item of spotifyData; let i = index;" [ngClass]="{'active' : i == 0}">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3 col-12 text-center mb-3">
+                                            <img class="img-fluid" [src]="item.image" alt="Avatar">
+                                            <p class="headerValue">{{item.name}}</p>
+                                        </div>
+                                        <div class="col-md-3 col-12 mb-3">
+                                            <p class="headerValue">Popularity</p>
+                                            <p class="text-center">
+                                                <mat-progress-spinner color="warn" mode="determinate" [value]="item.popularity" [diameter]="42"></mat-progress-spinner>
+                                                <span class="d-block mt-2">{{item.popularity}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-3 col-12 mb-3">
+                                            <p class="headerValue">Followers</p>
+                                            <p class="text-center">{{item.followers | number:'1.0-0'}}</p>
+                                        </div>
+                                        <div class="col-md-3 col-12 mb-3">
+                                            <p class="headerValue">Spotify Link</p>
+                                            <p class="text-center">
+                                                <a href="{{item.spotify_link}}" target="_blank" class="d-block">
+                                                    <i class="fa fa-spotify" style="color: green;font-size:48px;"></i>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <p class="headerValue">Albums featuring {{item.name}}</p>
+                                            <div class="row justify-content-center">
+                                                <div class="col-4">
+                                                    <img class="img-fluid mb-3" [src]="item.albums[0]">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img class="img-fluid mb-3" [src]="item.albums[1]">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img class="img-fluid mb-3" [src]="item.albums[2]">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                        <div *ngIf="displayNoSpoRecord" class="container text-center mt-5 mb-5">
+                            <p class="error_msj">No music-related artist details to show.</p>
+                        </div>
+                    </mat-tab> -->
+
+                <!-- <mat-tab label="Venue">
+                        <div id="address">
+                            <table id="venue_table">
+                                <tr>
+                                    <td id="general addressdetail">
+                                        <p class='headerValue'>Name</p><br>
+                                        <p class="dataValue">{{venue_name}}</p>
+                                        <p class='headerValue'>Address</p><br>
+                                        <p class="dataValue">{{addressline}}</p>
+                                        <p *ngIf="phonedisplay" class='headerValue'>Phone Number</p><br>
+                                        <p class="dataValue">{{phonenumber}}</p>
+
+                                    </td>
+                                    <td style="width: 400px;">
+                                        <p *ngIf="openhourdisply" class="headerValue">open Hours</p><br>
+                                        <p [ngClass]="{'expanded': expanded}" class="truncate dataValue">{{openhours}}
+                                        </p>
+
+                                        <div *ngIf="openhourdisply" class="col-12 text-center">
+                                            <p *ngIf="!expanded" class="text-decoration-underline"
+                                                (click)="expanded = true" style="color:#87ceeb">Show more<i
+                                                    class="fa fa-angle-down " style="color: white"></i>
+                                            </p>
+                                            <p *ngIf="expanded" class="text-decoration-underline"
+                                                (click)="expanded = false" style="color:#87ceeb">Show less<i
+                                                    class="fa fa-angle-up " style="color: white"></i></p>
+
+                                        </div>
+                                        <p *ngIf="GenralruleDisplay" class='headerValue'>General Rule</p><br>
+
+                                        <p [ngClass]="{'expanded1': expanded1}" class="truncate dataValue">
+                                            {{genralrules}}
+                                        </p>
+                                        <div *ngIf="GenralruleDisplay" class="col-12 text-center">
+                                            <p *ngIf="!expanded1" class="text-decoration-underline"
+                                                (click)="expanded1 = true" style="color:#87ceeb">Show more<i
+                                                    class="fa fa-angle-down " style="color: white"></i>
+                                            </p>
+                                            <p *ngIf="expanded1" class="text-decoration-underline"
+                                                (click)="expanded1 = false" style="color:#87ceeb">Show less<i
+                                                    class="fa fa-angle-up " style="color: white"></i></p>
+
+                                        </div>
+                                        <p *ngIf="childruleDisplay" class='headerValue'>Child Rule</p><br>
+                                        <p [ngClass]="{'expanded2': expanded2}" class="truncate dataValue">
+                                            {{childrules}}
+                                        </p>
+                                        <div *ngIf="childruleDisplay" class="col-12 text-center">
+                                            <p *ngIf="!expanded2" class="text-decoration-underline"
+                                                (click)="expanded2 = true" style="color:#87ceeb">Show more<i
+                                                    class="fa fa-angle-down " style="color: white"></i>
+                                            </p>
+                                            <p *ngIf="expanded2" class="text-decoration-underline"
+                                                (click)="expanded2 = false" style="color:#87ceeb">Show less<i
+                                                    class="fa fa-angle-up " style="color: white"></i></p>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                           
+
+
+                            <div class="col-12 text-center mb-4">
+                                <button class="btn btn-danger " (click)="openMapDialog()">Show venue on google map
+                                </button>
+                              
+
+
+                            </div>
+
+
+
+                        </div>
+
+                    </mat-tab> -->
+                <mat-tab label="Venue">
+                    <div id="address" style="margin-top: 15px;padding:10px">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class='headerValue'>Name</p>
+                                <p class="dataValue">{{venue_name}}</p>
+                                <p class='headerValue'>Address</p>
+                                <p class="dataValue">{{addressline}}</p>
+                                <p *ngIf="phonedisplay" class='headerValue'>Phone Number</p>
+                                <p class="dataValue">{{phonenumber}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p *ngIf="openhourdisply" class="headerValue">Open Hours</p>
+                                <p [ngClass]="{'expanded': expanded}" class="truncate dataValue">{{openhours}}</p>
+                                <div *ngIf="openhourdisply" class="col-12 text-center">
+                                    <p *ngIf="!expanded" class="text-decoration-underline" (click)="expanded = true"
+                                        style="color:#87ceeb">Show More<i class="fa fa-angle-down"
+                                            style="color: white"></i></p>
+                                    <p *ngIf="expanded" class="text-decoration-underline" (click)="expanded = false"
+                                        style="color:#87ceeb">Show less<i class="fa fa-angle-up"
+                                            style="color: white"></i></p>
+                                </div>
+                                <p *ngIf="GenralruleDisplay" class='headerValue'>General Rule</p>
+                                <p [ngClass]="{'expanded1': expanded1}" class="truncate dataValue">{{genralrules}}</p>
+                                <div *ngIf="GenralruleDisplay" class="col-12 text-center">
+                                    <p *ngIf="!expanded1" class="text-decoration-underline" (click)="expanded1 = true"
+                                        style="color:#87ceeb">Show More<i class="fa fa-angle-down"
+                                            style="color: white"></i></p>
+                                    <p *ngIf="expanded1" class="text-decoration-underline" (click)="expanded1 = false"
+                                        style="color:#87ceeb">Show less<i class="fa fa-angle-up"
+                                            style="color: white"></i></p>
+                                </div>
+                                <p *ngIf="childruleDisplay" class='headerValue'>Child Rule</p>
+                                <p [ngClass]="{'expanded2': expanded2}" class="truncate dataValue">{{childrules}}</p>
+                                <div *ngIf="childruleDisplay" class="col-12 text-center">
+                                    <p *ngIf="!expanded2" class="text-decoration-underline" (click)="expanded2 = true"
+                                        style="color:#87ceeb">Show More<i class="fa fa-angle-down"
+                                            style="color: white"></i></p>
+                                    <p *ngIf="expanded2" class="text-decoration-underline" (click)="expanded2 = false"
+                                        style="color:#87ceeb">Show less<i class="fa fa-angle-up"
+                                            style="color: white"></i></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- <div class="row mt-3 mb-3">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-danger" (click)="openMapDialog()">Show venue on google
+                                    map</button>
+                            </div>
+                        </div> -->
+                        <div class="row mt-3 mb-3">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-danger" (click)="open(content)">show venue on google map</button>
+                            </div>
+                        </div>
+
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h1 class="modal-title" id="modal-basic-title">Event Venue</h1>
+                            </div>
+                            <div class="modal-body">
+                                <google-map [options]= "mapOptions" width="100%" height="400">
+                                    <map-marker [position]="marker.position"></map-marker>
+                                </google-map>
+                            <!-- </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-sm-6 text-right"> -->
+                                <button type="button" class="btn btn-dark" (click)="modal.close()" style="
+                                margin-top: 20px;
+                                margin-bottom: 20px;
+                                margin-left: 10px;
+                            ">Close</button>
+                            </div>
+                        <!-- </div>
+                    </div> -->
+                        </ng-template>
+
+                    </div>
+                </mat-tab>
+
+                <!-- <mat-tab label="demo">
+                        <div *ngIf="displaySpoRecord">
+                            <ngb-carousel *ngIf="spotifyData.length != 0" [showNavigationIndicators]="false"
+                                [interval]="0" class="my-carousel"
+                                [showNavigationArrows]="spotifyData.length == 1?false:true">
+
+                                <ng-template ngbSlide *ngFor="let item of spotifyData">
+                                    <div class="row mt-3">
+                                        <div class="col-sm-3" style="text-align: center">
+                                            <img class='img1' src="{{item.image}}" alt="Avatar" style="width:120px">
+                                            <p class='headerValue mt-2'>{{item.name}}</p>
+                                        </div>
+                                        <div class="col-sm-3" style="margin-top: 10px;">
+                                            <p class="headerValue">Popularity</p>
+                                            <p style="text-align: center;margin-top: 20px; ">
+                                                <mat-progress-spinner color="warn" mode="determinate"
+                                                    [value]="item.popularity" [diameter]="42"
+                                                    style="margin-right:auto ; margin-left:auto">
+                                                </mat-progress-spinner>
+                                                <span style="position:relative; top: -33px;color:white">
+                                                    {{item.popularity}}
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-3" style="margin-top: 10px;">
+                                            <p class="headerValue" style="margin-bottom: 20px">Followers</p>
+                                            <p style="color: white;text-align:center;margin-bottom:40px">{{ item.followers |
+                                                number:'1.0-0' }}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-3" style="margin-top: 10px;text-align:center">
+                                            <p class="headerValue" style="margin-bottom: 20px">Spotify Link</p>
+                                            <p style="text-align: center" style="margin-bottom: 20px">
+                                                <a class="icon__spotify" href="{{item.spotify_link}}" target="_blank"
+                                                    style="text-align:center">
+                                                    <i class="fa fa-spotify" style="color: green;font-size:35px;"></i>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <p class="headerValue text-start mt-2" style="font-size:small;margin-bottom:20px">Albums featuring {{item.name}}</p>
+                                        </div>
+                                        <div class="container">
+                                            <div class="row text-center justify-content-center">
+                                                <div class="col-md-4 mb-3 m-auto ">
+                                                    <img style="width: 7rem" [src]="item.albums[0]">
+                                                </div>
+                                                <div class="col-md-4 mb-3 m-auto">
+                                                    <img style="width: 7rem" [src]="item.albums[1]">
+                                                </div>
+                                                <div class="col-md-4 mb-3 m-auto">
+                                                    <img style="width: 7rem" [src]="item.albums[2]">
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </ng-template>
+                            </ngb-carousel>
+                        </div>
+                         
+                        <div *ngIf="displayNoSpoRecord" class="container p-auto text-center mt-5 mb-5  ">
+                            <p class="error_msj">
+                                No music related artist details to show 
+                            </p>
+                        </div>
+                        
+                    </mat-tab> -->
+            </mat-tab-group>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- </body>
+
+</html> -->

@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row mt-4 ml-2 mb-4 " >
+        <p lass="font-weight-bold" style="font-size: 24px;">Event Venue</p>
+        <hr class="bg-dark">
+    </div>
+    <div class="m-2 row">
+        <div class="col-12">
+            <google-map [options]= "mapOptions">
+                <map-marker [position]="marker.position"></map-marker>
+            </google-map>
+        </div>
+    </div>
+    
+    
+    <div class="row closeSection">
+        <button mat-dialog-close class="btn btn-dark mt-4 ml-4 mb-4">Close</button>
+    </div>
+</div>

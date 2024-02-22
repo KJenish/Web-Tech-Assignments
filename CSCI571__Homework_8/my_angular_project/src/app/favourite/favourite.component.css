@@ -1,0 +1,19 @@
+.headerValue {
+    color: #75fee2;
+    margin-bottom: 0px;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    text-align: center;
+  }
+  /* .error_msj {
+    background-color: white;
+    color: red;
+    text-align: center;
+    font-family: sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+  } */
+  .tb_round{
+    border: 0px solid white;
+    border-radius: 10px;
+  }

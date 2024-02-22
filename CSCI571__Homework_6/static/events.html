@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&family=Merriweather:wght@300&display=swap" rel="stylesheet">
+  <script src="/static/back.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url(/static/background.jpg);
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .center {
+      margin: auto;
+      width: 600px;
+      height: auto;
+      padding: 20px;
+      margin-top: 40px;
+      border-radius: 25px;
+      background-color: rgba(153, 153, 153, 0.2);
+      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(15px);
+      
+    }
+
+    .event_box {
+      margin: auto;
+      width: 800px;
+      height: auto;
+      border-radius: 25px;
+      background-color: rgba(153, 153, 153, 0.2);
+      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(15px);
+      margin-top: 40px;
+      padding:30px 30px 30px 30px;
+      
+    }
+
+    .hide {
+      display: none;
+    }
+    .art1{
+      color:#078fae;
+      margin: -15px 0px -5px 0px;
+
+    }
+
+    .textcolor {
+      color: white;
+      font-family: 'Merriweather', serif;
+    }
+
+    .formtxtcolor {
+      color: #96c1db;
+      font-family: 'Lato', sans-serif;
+
+
+    }
+
+    .required {
+      color: red;
+    }
+
+    .transbox {
+      background-color: rgba(255, 255, 255, 0.4);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+    }
+
+    input[type=text] {
+      background: transparent;
+      border: none;
+      border: 1px solid white;
+      border-radius: 5px;
+      width: 97%;
+      height: 30px;
+      margin-top: 10px;
+      font-size: 12pt;
+      font-family: 'Times New Roman', Times, serif;
+      padding-left: 10px;
+
+
+    }
+
+    input[type=number] {
+      background: transparent;
+      border: none;
+      border: 1px solid white;
+      border-radius: 5px;
+      width: 30%;
+      height: 30px;
+      margin-top: 10px;
+      font-size: 12pt;
+      font-family: 'Times New Roman', Times, serif;
+      padding-left: 10px;
+    }
+
+    select {
+      background: transparent;
+      border: none;
+      border: 1px solid white;
+      border-radius: 5px;
+      width: 50%;
+      height: 35px;
+      margin-top: 10px;
+      font-size: 12pt;
+      font-family: 'Times New Roman', Times, serif;
+      padding-left: 10px;
+
+    }
+
+    /*  button {
+                color: white;
+                border: none;
+                border-radius: 5px;
+                width:100px;
+                height: 40px;
+                margin-top: 10px;
+                font-size: 12pt;
+                font-family:'Times New Roman', Times, serif;  
+            }*/
+    button {
+      display: inline-block;
+      font-size: 24px;
+      text-align: center;
+      outline: none;
+      color: #fff;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-family: 'Times New Roman', Times, serif;
+      height: 40px;
+      width: 100px;
+      font-size: 12pt;
+    }
+
+    .butt1 {
+      background: #ff6c03;
+      box-shadow: 0 5px #fb4b00;
+    }
+
+    .butt2 {
+      background: #4f6fad;
+      box-shadow: 0 5px #384c78;
+    }
+
+    .butt1:hover {
+      background-color: #ff8843;
+    }
+
+    .butt2:hover {
+      background-color: #557eb8;
+    }
+
+    #table-container {
+      margin-left: auto;
+      margin-right: auto;
+
+      height: auto;
+    }
+
+    #head_container {
+      text-align: center;
+    }
+
+    .headerValue {
+      color: #75fee2;
+      margin-bottom: 0px;
+      font-family: 'Lato', sans-serif;
+      font-weight: bold;
+
+
+    }
+
+    .dataValue {
+      color: #fbfafb;
+      margin: auto;
+      margin-top: 0px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .imagesetter {
+    width: 530px;
+    height: 315px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+    }
+    .img_set5{
+      display: inline-block;
+      text-align: right;
+      width: 500px;
+      /* vertical-align: middle; */
+      padding: auto;
+      padding: 80px 30px 80px 30px;
+      margin-left: 50px;
+    }
+
+    .arrow {
+      border: solid white;
+      border-width: 0 1px 1px 0;
+      display: inline-block;
+      padding: 3px;
+      width: 15px;
+      height: 15px;
+      font-weight: 100;
+    }
+    .arrow:hover{
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+      width: 15px;
+      height: 15px;
+      font-weight: 100;
+      cursor: pointer;
+    }
+
+
+    .down {
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+    }
+
+    .arrow_center {
+      margin-right: auto;
+      margin-left: auto;
+      text-align: center;
+    }
+
+
+    .venue_center {
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+
+    .venue_color {
+      color: white;
+      margin: 0px;
+      font-size: 20px;
+      text-align: center;
+      margin-top:20px ;
+      font-weight: 100;
+      font-family: sans-serif;
+    }
+
+    .venue_color1 {
+      color: black;
+      margin: 0px;
+      border-bottom: 1px solid black;
+      text-align: center;
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 30px;
+      font-weight: lighter;
+    }
+
+    .venue_address {
+      background-color: white;
+      width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 30px;
+      border-radius: 15px;
+      padding: 5px;
+
+    }
+    a {
+      text-decoration: none;
+    }
+    a:hover{
+      cursor: pointer;
+      color: purple;
+    }
+    .hov:hover {
+      cursor: pointer;
+    }
+
+    .hoverable:hover {
+      cursor: pointer;
+      color: purple;
+    }
+    .hov1 {
+      color: #078fae;
+    }
+    .hov1:hover{
+      color: purple;
+    }
+    .hov2{
+      color: #078fae;
+    }
+
+    .btt1 {
+      margin-block-start: 0em;
+      color: white;
+      display: inline-block;
+      background-color: green;
+      width: px;
+      padding: 5px;
+      text-align: center;
+      border-radius: 5px;
+      /* margin: 10px; */
+      font-family: sans-serif;
+      font-weight: lighter;
+      margin-block-end: 0em;
+      font-size: 12px;
+
+    }
+    .btt4 {
+      margin-block-start: 0em;
+      color: white;
+      display: inline-block;
+      background-color: orange;
+      width: px;
+      padding: 5px;
+      text-align: center;
+      border-radius: 5px;
+      /* margin: 10px; */
+      font-family: sans-serif;
+      font-weight: lighter;
+      margin-block-end: 0em;
+      font-size: 12px;
+
+    }.btt5 {
+      margin-block-start: 0em;
+      color: white;
+      display: inline-block;
+      background-color: black;
+      width: px;
+      padding: 5px;
+      text-align: center;
+      border-radius: 5px;
+      /* margin: 10px; */
+      font-family: sans-serif;
+      font-weight: lighter;
+      margin-block-end: 0em;
+      font-size: 12px;
+
+    }
+
+    .btt2 {
+      margin-block-start: 0em;
+      color: white;
+      display: inline-block;
+      background-color: orange;
+      width: px;
+      padding: 5px;
+      text-align: center;
+      border-radius: 5px;
+      /* margin: 10px; */
+      font-family: sans-serif;
+      font-weight: lighter;
+      margin-block-end: 0em;
+      font-size: 12px;
+
+
+    }
+
+    .btt3 {
+      margin-block-start: 0em;
+      color: white;
+      display: inline-block;
+      background-color: red;
+      width: px;
+      padding: 5px;
+      text-align: center;
+      border-radius: 5px;
+      /* margin: 10px; */
+      font-family: sans-serif;
+      font-weight: lighter;
+      margin-block-end: 0em;
+      font-size: 12px;
+
+
+    }
+
+    .error_msj {
+      background-color: white;
+      color: red;
+      text-align: center;
+      width: 1000px;
+      font-family: sans-serif;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10px;
+    }
+
+    #image_container {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+
+    }
+
+    .img_set {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      width: 160px;
+      height: 100px;
+      margin-top: 10px;
+    }
+
+    .box_set {
+      margin: 10px 10px 10px 10px;
+      border: 1px solid black;
+      border-radius: 15px;
+    }
+
+    .add_vertical {
+      font-weight: bold;
+      vertical-align: top;
+      font-size: 20px;
+      width: 200px;
+      text-align: right;
+      margin-left: 50px;
+    }
+
+    .add_vertical1 {
+
+      vertical-align: top;
+      font-size: 20px;
+      width: 300px;
+      text-align: left;
+      margin-left: 50px;
+      border-right: solid;
+    }
+
+    .add_vertical2 {
+
+      text-decoration: none;
+      vertical-align: top;
+      font-size: 20px;
+      width: 480px;
+      text-align: center;
+      margin-left: 50px;
+      padding: 20px;
+
+    }
+    option{
+      background-color: black;
+      backdrop-filter: blur(75px);
+    }
+
+    .map_details_set {
+      text-align: center;
+      font-size: 20px;
+      border-right: solid;
+    }
+
+    .border_set {
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    .hed_center {
+      text-align: center;
+    }
+    .add_cent{
+      margin-top: 20px;
+    }
+    .table_setar{
+      width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .hed_set{
+      font-size: 30px;
+      font-weight: bold;
+      font-family: 'Lato';
+    }
+  </style>
+
+<body>
+  <title>Events Search</title>
+  <div class="center">
+    <h1 class="textcolor" style="text-align:center;">Events Search</h1>
+    <hr size="1" width="99%" color="white">
+    <div style="margin-top:30px ;">
+      <form id="event_form">
+        <label class="formtxtcolor" for="keyword">Keyword<span class="required">*</span></label>
+        <br> <input type="text" required id="keyword" name="keyword" style="color:white ;">
+        <p id="demo"></p>
+        <div style="margin-top: 10px; ">
+          <label class="formtxtcolor" for="distance">Distance (miles)</label>
+          <label style="margin-left:170px ;" class="formtxtcolor" for="category">Category<span
+              class="required">*</span></label>
+          <br> <input type="number" placeholder="10" id="distance" name="distance"
+            style="color:white;text-align:justify;">
+
+          <select style="margin-left:90px; color:white;" id="category" name="Category">
+            <option backvalue="Default">Default</option>
+            <option value="Music">Music</option>
+            <option value="Sports">Sports</option>
+            <option value="Arts & Theatre">Arts & Theatre</option>
+            <option value="Film">Film</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+          </select>
+        </div>
+        <div style="margin-top: 10px">
+          <label class="formtxtcolor" for="Location">Location<span class="required">*</span></label>
+          <input type="checkbox" id="auto_location" onclick="hidebox();">
+          <label style="color:white;font-size:13pt;font-weight: 100;" for="auto_location"> Auto-Detect
+            Location</label><br>
+          <input type="text" id="location" style="color:white ;" required>
+        </div>
+        <div style="margin-top: 20px">
+          <button class="butt1" type="button" onclick="getformdata(this.form);">SEARCH</button>
+          <button class="butt2" type="button" onclick="clear_data()">CLEAR</button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+  <div id="table-container">
+
+  </div>
+
+  <div id="event_list">
+    <div id="head_container" class="textcolor">
+     
+    </div>
+    <table>
+      <tr>
+        <td id="id1" style="font-family:'lato',sans-serif;width:max-content"></td>
+        <td id="id2"></td>
+      </tr>
+    </table>
+  </div>
+  <div id="venue_detail">
+  </div>
+  <div id="venue_address">
+    <div id="box_border">
+      <div id="venue_heading"></div>
+      <div id="image_container"></div>
+      <div id="address">
+        <table id="venue_table">
+          <tr>
+            <td id="id3"></td>
+            <td id="id4"></td>
+            <td id="id5"></td>
+          </tr>
+          <tr>
+            <td id="map_details" colspan="2"></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</head>
+
+</html>
+
+
+
+
+
+
+
